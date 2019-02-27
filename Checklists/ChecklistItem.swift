@@ -2,18 +2,17 @@
 //  ChecklistItem.swift
 //  Checklists
 //
-//  Created by informatics on 20/2/2562 BE.
-//  Copyright © 2562 informatics. All rights reserved.
+//  Created by student on 20/2/2562 BE.
+//  Copyright © 2562 Buu. All rights reserved.
 //
 
 import Foundation
 
-class ChecklistItem {
+class ChecklistItem{
     var text = ""
     var checked = false
-    
-    func toggleChecked() {
+    func toggleChecked(){
         checked = !checked
     }
-    
 }
+

@@ -3,7 +3,7 @@
 //  Checklists
 //
 //  Created by student on 13/2/2562 BE.
-//  Copyright © 2562 informatics. All rights reserved.
+//  Copyright © 2562 Buu. All rights reserved.
 //
 
 import UIKit
