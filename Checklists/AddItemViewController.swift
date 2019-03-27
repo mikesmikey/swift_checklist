@@ -8,22 +8,40 @@
 
 import UIKit
 
+protocol AddItemViewControllerDelegate: class {
+    func addItemViewControllerDidCancel(
+        _ controller: AddItemViewController)
+    func addItemViewController(
+        _ controller: AddItemViewController,
+        didFinishAdding item: ChecklistItem)
+    
+}
+
 class AddItemViewController: UITableViewController, UITextFieldDelegate {
 
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var doneBarButton: UIBarButtonItem!
+    weak var delegate: AddItemViewControllerDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.largeTitleDisplayMode = .never
     }
+    
 
     @IBAction func back() {
-        navigationController?.popViewController(animated: true)
+        //navigationController?.popViewController(animated: true)
+        delegate?.addItemViewControllerDidCancel(self)
     }
     
     @IBAction func done() {
-        print("Content of the textfield : \(textField.text!)")
-        navigationController?.popViewController(animated: true)
+        //print("Content of the textfield : \(textField.text!)")
+        //navigationController?.popViewController(animated: true)
+        let item = ChecklistItem()
+        item.text = textField.text!
+        
+        delegate?.addItemViewController(self, didFinishAdding: item)
+        
     }
     
     override func tableView(_ tableView: UITableView,

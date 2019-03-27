@@ -8,7 +8,22 @@
 
 import UIKit
 
-class ChecklistViewController: UITableViewController {
+class ChecklistViewController: UITableViewController, AddItemViewControllerDelegate {
+    func addItemViewControllerDidCancel(_ controller: AddItemViewController) {
+        navigationController?.popViewController(animated:true)
+    }
+    
+    func addItemViewController(
+        _ controller: AddItemViewController,
+        didFinishAdding item: ChecklistItem) {
+        let newRowIndex = items.count
+        items.append(item)
+        let indexPath = IndexPath(row: newRowIndex, section: 0)
+        let indexPaths = [indexPath]
+        tableView.insertRows(at: indexPaths, with: .automatic)
+        navigationController?.popViewController(animated:true)
+    }
+    
     
     var items = [ChecklistItem]()
     
@@ -117,51 +132,6 @@ class ChecklistViewController: UITableViewController {
     }
     
     func configureCheckmark(for cell: UITableViewCell, with item: ChecklistItem) {
-        // เน่าๆๆๆๆๆๆๆๆๆ
-        /*var isChecked = false
-        
-        if indexPath.row == 0 {
-            //row0checked = !row0checked
-            //isChecked = row0checked
-            
-            row0item.checked = !row0item.checked
-            isChecked = row0item.checked
-        } else if indexPath.row == 1 {
-            //row1checked = !row1checked
-            //isChecked = row1checked
-            
-            row1item.checked = !row1item.checked
-            isChecked = row1item.checked
-        } else if indexPath.row == 2 {
-            //row2checked = !row2checked
-            //isChecked = row2checked
-            
-            row2item.checked = !row2item.checked
-            isChecked = row2item.checked
-        }else if indexPath.row == 3 {
-            //row3checked = !row3checked
-            //isChecked = row3checked
-            
-            row3item.checked = !row3item.checked
-            isChecked = row3item.checked
-        }else if indexPath.row == 4 {
-            //row4checked = !row4checked
-            //isChecked = row4checked
-            
-            row4item.checked = !row4item.checked
-            isChecked = row4item.checked
-        }
-        
-        if isChecked {
-            cell.accessoryType = .checkmark
-        } else {
-            cell.accessoryType = .none
-        }
-        
-        tableView.deselectRow(at: indexPath, animated: true)
-         */
-        
-        //let item = items[indexPath.row]
         
         if item.checked {
             cell.accessoryType = .checkmark
@@ -181,32 +151,7 @@ class ChecklistViewController: UITableViewController {
         
         let item = items[indexPath.row]
         
-        configureText(for: cell, with: item)	
-        
-        //label.text = item.text
-        
-        
-        /*if indexPath.row == 0{
-            //label.text = row0text
-            
-            label.text = row0item.text
-        }else if indexPath.row == 1 {
-            //label.text = row1text
-            
-            label.text = row1item.text
-        }else if indexPath.row == 2 {
-            //label.text = row2text
-            
-            label.text = row2item.text
-        }else if indexPath.row == 3 {
-            //label.text = row3text
-            
-            label.text = row3item.text
-        }else if indexPath.row == 4 {
-            //label.text = row4text
-            
-            label.text = row4item.text
-        }*/
+        configureText(for: cell, with: item)
         
         configureCheckmark(for: cell, with: item)
         return cell
@@ -222,16 +167,16 @@ class ChecklistViewController: UITableViewController {
         tableView.deleteRows(at: indexPaths, with: .automatic)
     }
     
-    @IBAction func addItem() {
-        let newRowIndex = items.count
-        
-        let item = ChecklistItem()
-        item.text = "I am a new row"
-        items.append(item)
-        
-        let indexPath = IndexPath(row: newRowIndex, section: 0)
-        let indexPaths = [indexPath]
-        tableView.insertRows(at: indexPaths, with: .automatic)
+    override func prepare(for segue: UIStoryboardSegue,
+                          sender: Any?) {
+        // 1
+        if segue.identifier == "AddItem" {
+            // 2
+            let controller = segue.destination
+                as! AddItemViewController
+            // 3
+            controller.delegate = self
+        }
     }
 }
 
